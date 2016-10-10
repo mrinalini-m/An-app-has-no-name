@@ -382,4 +382,13 @@ img {
   margin: 15px 0;
 }
 
-
+.save-score a {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.save-score span {
+  color: #55595c;
+  font-family: 'Bevan', cursive;
+  font-weight: 100 !important;
+  font-size: 25px;
+}

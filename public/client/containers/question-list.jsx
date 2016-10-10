@@ -224,7 +224,7 @@ closeResult(){
 
   // Single Player mode
 
-  if (!this.state.roomId && this.state.singleP.length === 8) {
+  if (!this.state.roomId && this.state.singleP.length === 1) {
       this.setState({gameOver: true});
       this.gameOver();
   }
@@ -397,15 +397,13 @@ renderAllModals() {
               <Button waves='light'>Go to Leaderboard</Button>
             </Link>
             :
-            <div>
+            <div className="save-score">
               <Link to='/users/signup' onClick={callback}>Sign Up 
-                    {/* <Button waves='light'>Sign Up instead</Button> */}
               </Link>
-              or 
+               <span> or </span>
               <Link to='/users/signin' onClick={callback}>Sign In 
-                    {/* <Button waves='light'>Sign Up instead</Button> */}
               </Link>
-              to save score
+               <span> to save score!</span>
             </div>
           }
         </div>
