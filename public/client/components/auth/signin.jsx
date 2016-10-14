@@ -11,7 +11,6 @@ import { Button, Input, Form, CollapsibleItem, Modal} from 'react-materialize';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
-    {/* <label>{label}</label> */}
     <div>
       <Input {...input} placeholder={label} type={type}/>
       { touched && error && <div className="form-error">{error}</div> }
@@ -22,29 +21,13 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 class Signin extends Component {
   constructor (props) {
     super(props);
-    // this.props.signinUser = this.props.props.signinUser.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   handleFormSubmit(values) {
     console.log(values, 'values');
     this.props.signinUser(values);
-    // browserHistory.push('/');
   }
-  // renderLoginStatus() {
-  //   if(!this.props.loginStatus){
-  //     return (
-  //       <h4>Sign in to save scores!</h4>
-  //     )
-  //   }
-  //   return (
-  //     <div>{this.props.loginStatus.data}</div>
-  //   )
-  // }
-
-    // font-size: 25px;
-    // border: solid #adadad;
-    // color: #adadad;
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
@@ -65,10 +48,8 @@ class Signin extends Component {
               </div>
               <div className="auth-option">
                 <Link to='/users/signup'>Sign Up instead
-                  {/* <Button waves='light'>Sign Up instead</Button> */}
                 </Link>
               </div>
-              {/* <div>{this.renderLoginStatus()}</div> */}
             </div>
           </form>
         </div>
@@ -86,15 +67,12 @@ const validate = props => {
       errors[f] = `${fields[f]} is required!`;
     }
   });
-
   return errors;
 }
 
 function mapStateToProps(state){
   return {
-    // loginStatus: state.SigninReducer,
     errorMessage: state.AuthReducer.error,
-
   };
 }
 

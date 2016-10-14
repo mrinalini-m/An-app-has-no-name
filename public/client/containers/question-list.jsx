@@ -12,6 +12,8 @@ import * as audio from '../audio';
 import {customStyles} from '../helpers/modalStyle.js';
 import path from 'path';
 import { Button } from 'react-materialize';
+import openModal from './open-modal';
+import closeModal from './close-modal';
 
 const ReactToastr = require("react-toastr");
 const {ToastContainer} = ReactToastr;
@@ -35,8 +37,8 @@ class QuestionList extends Component {
       yourTurn: false,
       roomId: null
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModal = openModal.bind(this);
+    this.closeModal = closeModal.bind(this);
     this.gameOver = this.gameOver.bind(this);
     this.closeResult = this.closeResult.bind(this);
     this.getScore = this.getScore.bind(this);
@@ -124,44 +126,6 @@ componentDidMount() {
   });
 }
 
-// Open Answer Modal
-openModal(question) {
-
-  this.setState({answerResultModal: question.correct_answer});
-
-  // Check if question was answered or it is not the correct turn
-  if (((this.state.chosenQuestion.includes(question._id) || !this.state.yourTurn) && this.state.roomId) || question.clicked === true) {
-
-    // If it is alert
-    this.addAlert('Player 2 picking...');
-
-  } else {
-
-    // Create data variable to send back to server to broadcast
-    let data = {
-      roomId: this.state.roomId,
-      modalOpen: this.state.modalOpen,
-      question: question,
-      chosenQuestion: this.state.chosenQuestion.length
-    };
-
-    // Invoke openModal at the server and send data back
-    //Check if multiplayer or not
-    if (this.state.roomId) {
-      Socket.emit('openModal', data);
-
-      // Set turn to be false
-      this.setState({yourTurn: false});
-
-    } else {
-      //Single Player mode
-      this.setState({modalOpen: true});
-    }
-
-    //set it to keep track in Single Player mode
-    question.clicked = true;
-  }
-}
 
   sendScore() {
     const id = localStorage.getItem('id');
@@ -224,36 +188,10 @@ closeResult(){
 
   // Single Player mode
 
-  if (!this.state.roomId && this.state.singleP.length === 1) {
+  if (!this.state.roomId && this.state.singleP.length === 2) {
       this.setState({gameOver: true});
       this.gameOver();
   }
-}
-
-// Close the Answer Modal, Not the result
-closeModal() {
-  let data = {
-    roomId: this.state.roomId,
-    modalOpen: !this.state.modalOpen,
-    chosenQuestion: this.state.chosenQuestion.length,
-    currentQuestion: this.state.currentQuestion,
-  };
-
-  // Multiplayer
-  if (this.state.roomId) {
-    Socket.emit('closeModal', data);
-    Socket.emit('trackingGame', data);
-  } else {
-  // SinglePlayer
-    let counter = 0;
-    this.setState({
-      modalOpen: false,
-      singleP: [counter++, ...this.state.singleP]
-    });
-  }
-
-  //Send the data back to Server to broadcast
-  this.setState({resultModal:true});
 }
 
 // Final modal close
